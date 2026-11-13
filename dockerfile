@@ -1,22 +1,18 @@
-# 1. Alpine image use karenge jo bohot light aur stable hoti hai
+# 1. Node.js बेस इमेज चुनें
 FROM node:18-alpine
 
-# 2. Working directory set karenge
+# 2. कंटेनर के अंदर वर्किंग डायरेक्टरी सेट करें
 WORKDIR /app
 
-# 3. Package files ko copy karenge
+# 3. पहले package.json फ़ाइलें कॉपी करें (यह बहुत ज़रूरी है)
 COPY package*.json ./
 
-# 4. Network timeout badha kar install karenge taaki slow internet par bhi fail na ho
-RUN npm config set fetch-retry-maxtimeout 120000 && \
-    npm config set fetch-retries 5 && \
-    npm install
+# 4. अब dependencies इंस्टॉल करें
+RUN npm install
 
-# 5. Baaki ka saara code copy karenge
+# 5. अब बाकी का सारा कोड कॉपी करें
 COPY . .
 
-# 6. Port define karenge
+# 6. ऐप को स्टार्ट करें
 EXPOSE 3000
-
-# 7. App start karne ki command
 CMD ["npm", "start"]
